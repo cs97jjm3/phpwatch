@@ -1,26 +1,62 @@
+<div ng-controller="MonitorEditCtrl">
+  <div class="btn-group" id="monitor-add" ng-hide="isEditing" ng-show="!isEditing">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+      Create New Monitor <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><a ng-click="showEditor('connection')">Connection Monitor</a></li>
+      <li><a ng-click="showEditor('http')">HTTP Validation Monitor</a></li>
+    </ul>
+  </div>
+
+  <div class="well" id="monitor-editor" ng-show="isEditing">
+    <ng-include src="editor"></ng-include>
+  </div>
+</div>
+
 <div class="table-responsive">
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>#</th>
         <th>Endpoint</th>
+        <th>Alias</th>
         <th>Contacts</th>
         <th>Last Query</th>
-        <th>Uptime (Day/Week/All)</th>
+        <th>Uptime (Day)</th>
+        <th>Uptime (Week)</th>
+        <th>Uptime (All)</th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="monitor in monitors">
-        <td>{{ $index + 1 }}</td>
-        <td>{{ monitor.endpoint }}</td>
+      <tr ng-repeat="monitor in monitors" ng-class="getRowClass(monitor.current)">
+        <td><strong>{{ monitor.endpoint }}</strong></td>
+        <td>{{ monitor.alias || "N/A" }}</td>
         <td>
           <div ng-repeat="contact in monitor.contacts" class="inline">
             <a href="/contacts/{{ contact.id }}">{{ contact.name}}</a><div class="inline" ng-hide="$last">, </div>
           </div>
         </td>
-        <td>{{ monitor.uptime.day }} / {{ monitor.uptime.week }} / {{ monitor.uptime.all }}</td>
-        <td><a href="/monitor/edit/{{ monitor.id }} ">Edit</a> | <a href="/monitor/delete/{{ monitor.id }}">Delete</a></td>
+        <td>{{ monitor.lastquery | date:'MM/dd/yyyy @ h:mma' }}</td>
+        <td>
+          {{ 100 * monitor.uptime.day.up / (monitor.uptime.day.up + monitor.uptime.day.down) | number: 2 }}%
+          ({{ monitor.uptime.day.up }} / {{ monitor.uptime.day.up + monitor.uptime.day.down }})
+        </td>
+        <td>
+          {{ 100 * monitor.uptime.week.up / (monitor.uptime.week.up + monitor.uptime.week.down) | number: 2 }}%
+          ({{ monitor.uptime.week.up }} / {{ monitor.uptime.week.up + monitor.uptime.week.down }})
+        </td>
+        <td>
+          {{ 100 * monitor.uptime.all.up / (monitor.uptime.all.up + monitor.uptime.all.down) | number: 2 }}%
+          ({{ monitor.uptime.all.up }} / {{ monitor.uptime.all.up + monitor.uptime.all.down }})
+        </td>
+        <td class="text-right">
+          <div class="btn-group">
+            <a class="btn btn-default" href="/monitor/edit/{{ monitor.id}}">Edit</a>
+            <a class="btn btn-default" href="/monitor/query/{{ monitor.id}}">Query</a>
+            <a class="btn btn-default btn-danger" href="/monitor/delete/{{ monitor.id }}">Delete</a>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
