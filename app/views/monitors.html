@@ -1,0 +1,27 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Endpoint</th>
+        <th>Contacts</th>
+        <th>Last Query</th>
+        <th>Uptime (Day/Week/All)</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="monitor in monitors">
+        <td>{{ $index + 1 }}</td>
+        <td>{{ monitor.endpoint }}</td>
+        <td>
+          <div ng-repeat="contact in monitor.contacts" class="inline">
+            <a href="/contacts/{{ contact.id }}">{{ contact.name}}</a><div class="inline" ng-hide="$last">, </div>
+          </div>
+        </td>
+        <td>{{ monitor.uptime.day }} / {{ monitor.uptime.week }} / {{ monitor.uptime.all }}</td>
+        <td><a href="/monitor/edit/{{ monitor.id }} ">Edit</a> | <a href="/monitor/delete/{{ monitor.id }}">Delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
