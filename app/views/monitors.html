@@ -30,25 +30,23 @@
     </thead>
     <tbody>
       <tr ng-repeat="monitor in monitors" ng-class="getRowClass(monitor.current)">
-        <td><strong>{{ monitor.host }}:{{ monitor.port }}</strong></td>
-        <td>{{ monitor.alias || "N/A" }}</td>
+        <td><strong>{{ monitor.hostname }}:{{ monitor.port }}</strong></td>
+        <td>{{ monitor.alias || "--" }}</td>
         <td>
           <div ng-repeat="contact in monitor.contacts" class="inline">
             <a href="/contacts/{{ contact.id }}">{{ contact.name}}</a><div class="inline" ng-hide="$last">, </div>
           </div>
+          <div class="inline" ng-show="monitor.contacts.length == 0">--</div>
         </td>
-        <td>{{ monitor.lastquery | date:'MM/dd/yyyy @ h:mma' }}</td>
+        <td>{{ monitor.lastQuery * 1000 | date:'MM/dd/yyyy @ h:mma' }}</td>
         <td>
-          {{ 100 * monitor.uptime.day.up / (monitor.uptime.day.up + monitor.uptime.day.down) | number: 2 }}%
-          ({{ monitor.uptime.day.up }} / {{ monitor.uptime.day.up + monitor.uptime.day.down }})
-        </td>
-        <td>
-          {{ 100 * monitor.uptime.week.up / (monitor.uptime.week.up + monitor.uptime.week.down) | number: 2 }}%
-          ({{ monitor.uptime.week.up }} / {{ monitor.uptime.week.up + monitor.uptime.week.down }})
+          {{ 100 * monitor.statistics.day.online / (monitor.statistics.day.total) | number: 1 }}%
         </td>
         <td>
-          {{ 100 * monitor.uptime.all.up / (monitor.uptime.all.up + monitor.uptime.all.down) | number: 2 }}%
-          ({{ monitor.uptime.all.up }} / {{ monitor.uptime.all.up + monitor.uptime.all.down }})
+          {{ 100 * monitor.statistics.week.online / (monitor.statistics.week.total) | number: 1 }}%
+        </td>
+        <td>
+          {{ 100 * monitor.statistics.all.online / (monitor.statistics.all.total) | number: 1 }}%
         </td>
         <td class="text-right">
           <div class="btn-group">

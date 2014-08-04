@@ -1,4 +1,4 @@
-<form name="monitorForm" ng-submit="submitForm()" ng-controller="HttpMonitorCtrl" novalidate>
+<form name="monitorForm" ng-submit="submitMonitor()" ng-controller="HttpMonitorCtrl" novalidate>
   <div class="form-group" ng-class="{ 'has-error' : monitorForm.hostname.$invalid && !monitorForm.hostname.$pristine }">
     <label>Hostname</label>
     <input type="text" name="hostname" class="form-control" ng-model="monitor.host" required>
@@ -39,6 +39,47 @@
     <label>Minutes of Downtime</label>
     <input type="number" name="downtimeDur" class="form-control" ng-model="monitor.downtimeDur" min="0" value="0" required>
     <p class="help-block">Minutes of downtime</p>
+  </div>
+
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.timeout.$invalid && !monitorForm.timeout.$pristine }">
+    <label>Timeout</label>
+    <input type="number" name="timeout" class="form-control" ng-model="httpMonitor.timeout" min="1" required>
+    <p class="help-block">The number of seconds until a connection attempt times out</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.pattern.$invalid && !monitorForm.pattern.$pristine }">
+    <label>Pattern</label>
+    <input type="text" name="pattern" class="form-control" ng-model="httpMonitor.pattern" required>
+    <p class="help-block">The pattern to find in the responser</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.matchMethod.$invalid && !monitorForm.matchMethod.$pristine }">
+    <label>Match Method</label>
+    <p class="help-block">The method by which the pattern will be checked</p>
+    <div class="radio">
+      <label>
+        <input type="radio" name="matchMethod" ng-model="httpMonitor.matchMethod" value="1" checked>Basic match
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="matchMethod" ng-model="httpMonitor.matchMethod" value="2">Regular expression
+      </label>
+    </div>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.mustContain.$invalid && !monitorForm.mustContain.$pristine }">
+    <label>Condition</label>
+    <p class="help-block">What condition must be met for the monitor to be considered online?</p>
+    <div class="radio">
+      <label>
+        <input type="radio" name="mustContain" ng-model="httpMonitor.mustContain" value="1" checked>The monitor
+        <strong>must</strong> contain the pattern.
+      </label>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="mustContain" ng-model="httpMonitor.mustContain" value="2">The monitor <strong>must
+        not</strong> contain the pattern.
+      </label>
+    </div>
   </div>
   <button type="submit" class="btn btn-primary" ng-disabled="monitorForm.$invalid">Submit</button> <a class="btn
   btn-default" ng-click="hideEditor()">Cancel</a>

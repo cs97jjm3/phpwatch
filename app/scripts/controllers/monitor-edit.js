@@ -6,6 +6,7 @@
   app.controller('MonitorEditCtrl', ['$scope', function ($scope) {
     $scope.isEditing = false;
     $scope.monitorNew = {
+      type: 'connection',
       host: '',
       port: 80,
       alias: '',
@@ -32,7 +33,9 @@
 
     $scope.hideEditor = function() {
       $scope.isEditing = false;
+      $scope.showDowntime = false;
       $scope.monitor = angular.copy($scope.monitorNew);
+
       angular.forEach($scope.monitorForm, function(input){
         if(typeof(input.$dirty) !== "undefined"){
           input.$dirty = false;
