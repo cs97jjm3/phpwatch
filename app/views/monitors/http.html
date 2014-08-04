@@ -1,1 +1,45 @@
-HTTP Test
+<form name="monitorForm" ng-submit="submitForm()" ng-controller="HttpMonitorCtrl" novalidate>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.hostname.$invalid && !monitorForm.hostname.$pristine }">
+    <label>Hostname</label>
+    <input type="text" name="hostname" class="form-control" ng-model="monitor.host" required>
+    <p class="help-block">Hostname or IP to monitor</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.port.$invalid && !monitorForm.port.$pristine }">
+    <label>Port</label>
+    <input type="number" name="port" class="form-control" ng-model="monitor.port" min="1" max="65535" required>
+    <p class="help-block">Port to monitor</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.alias.$invalid && !monitorForm.alias.$pristine }">
+    <label>Alias</label>
+    <input type="text" name="alias" class="form-control" ng-model="monitor.alias" ng-max-length="50">
+    <p class="help-block">Optional alias for the monitor</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.failThreshold.$invalid && !monitorForm.failThreshold.$pristine }">
+    <label>Failure Threshold</label>
+    <input type="number" name="failThreshold" class="form-control" ng-model="monitor.failThreshold" min="1" required>
+    <p class="help-block">Number of sequential failures required to send notifications</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.status.$invalid && !monitorForm.status.$pristine }">
+    <label>Status</label>
+    <select ng-model="monitor.status" class="form-control" ng-change="statusChange()" required>
+      <option value="1">Running</option>
+      <option value="3">Paused</option>
+      <option value="4">Scheduled Downtime</option>
+    </select>
+    <p class="help-block">How the monitor should be treated for querying</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.downtimeStart.$invalid &&
+  !monitorForm.downtimeStart.$pristine }" ng-show="showDowntime">
+    <label>Minutes Until Downtime</label>
+    <input type="number" name="downtimeStart" class="form-control" ng-model="monitor.downtimeStart" min="0" value="0" required>
+    <p class="help-block">Minutes until downtime starts</p>
+  </div>
+  <div class="form-group" ng-class="{ 'has-error' : monitorForm.downtimeDur.$invalid &&
+  !monitorForm.downtimeDur.$pristine }" ng-show="showDowntime">
+    <label>Minutes of Downtime</label>
+    <input type="number" name="downtimeDur" class="form-control" ng-model="monitor.downtimeDur" min="0" value="0" required>
+    <p class="help-block">Minutes of downtime</p>
+  </div>
+  <button type="submit" class="btn btn-primary" ng-disabled="monitorForm.$invalid">Submit</button> <a class="btn
+  btn-default" ng-click="hideEditor()">Cancel</a>
+</form>

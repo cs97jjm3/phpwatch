@@ -9,7 +9,7 @@
     </ul>
   </div>
 
-  <div class="well" id="monitor-editor" ng-show="isEditing">
+  <div class="well col-sm-offset-4 col-sm-4" id="monitor-editor" ng-show="isEditing">
     <ng-include src="editor"></ng-include>
   </div>
 </div>
@@ -30,7 +30,7 @@
     </thead>
     <tbody>
       <tr ng-repeat="monitor in monitors" ng-class="getRowClass(monitor.current)">
-        <td><strong>{{ monitor.endpoint }}</strong></td>
+        <td><strong>{{ monitor.host }}:{{ monitor.port }}</strong></td>
         <td>{{ monitor.alias || "N/A" }}</td>
         <td>
           <div ng-repeat="contact in monitor.contacts" class="inline">

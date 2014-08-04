@@ -110,3 +110,8 @@ div.inline {
 .table tbody>tr>td {
   vertical-align: middle;
 }
+
+error {
+  background-color: #FA787E;
+}
+
